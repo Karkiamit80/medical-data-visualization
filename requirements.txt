@@ -5,7 +5,8 @@ matplotlib.pyplot
 seaborn 
 plotly.express 
 sklearn.preprocessing 
-StandardScaler, LabelEncoder
+StandardScaler
+LabelEncoder
 sklearn.decomposition 
 PCA
 sklearn.manifold 
