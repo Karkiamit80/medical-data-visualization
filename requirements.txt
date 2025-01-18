@@ -1,0 +1,15 @@
+streamlit 
+pandas 
+numpy 
+matplotlib.pyplot 
+seaborn 
+plotly.express 
+sklearn.preprocessing 
+StandardScaler, LabelEncoder
+sklearn.decomposition 
+PCA
+sklearn.manifold 
+TSNE
+lifelines
+KaplanMeierFitter
+
