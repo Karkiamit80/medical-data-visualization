@@ -278,16 +278,10 @@ elif selected_main_page == "EDA":
     st.pyplot(fig)
     desc_stats = df.describe()
     st.write(desc_stats)
-
+    # Compute descriptive statistics for numeric columns
+    
     # Calculate the correlation matrix
-    st.subheader("Correlation Matrix Heatmap")
-    corr_matrix = desc_stats.corr()
-
-    # Display the heatmap
-    fig, ax = plt.subplots(figsize=(10, 8))
-    sns.heatmap(corr_matrix, annot=True, fmt="float", cmap="coolwarm", cbar=True, ax=ax)
-    ax.set_title("Correlation Matrix Heatmap")
-    st.pyplot(fig)
+    
 
     # Categorical Features
     st.subheader("Categorical Features")
@@ -421,19 +415,22 @@ elif selected_main_page == "Correlation Heatmap":
     desc_stats = df.describe()
     st.write(desc_stats)
 
-    # Check for numeric columns
-    numeric_columns = df.select_dtypes(include=['float64', 'int64']).columns
-    if len(numeric_columns) > 1:
-        # Calculate the correlation matrix
-        st.subheader("Correlation Matrix Heatmap")
-        corr_matrix = df[numeric_columns].corr()
-
-        # Plot the heatmap
-        fig, ax = plt.subplots(figsize=(10, 8))
-        sns.heatmap(corr_matrix, annot=True, fmt=".2f", cmap="coolwarm", cbar=True, ax=ax)
-        ax.set_title("Correlation Matrix Heatmap")
-        st.pyplot(fig)
+    df['Date of Admission'] = pd.to_datetime(data['Date of Admission'], errors='coerce')
+    df['Discharge Date'] = pd.to_datetime(data['Discharge Date'], errors='coerce')
     
+    # Calculate Length of Stay (LOS) in days
+    data['Length of Stay'] = (data['Discharge Date'] - data['Date of Admission']).dt.days
+    stats_data = df[['Age', 'Billing Amount', 'Room Number', 'Length of Stay']].describe()
+    # Create a heatmap
+    fig, ax = plt.subplots(figsize=(12, 6))
+    sns.heatmap(stats_data, annot=True, fmt=".2f", cmap='coolwarm', cbar=True, linewidths=0.5, ax=ax)
+    ax.set_title("Statistic Heatmap of Numeric Features", fontsize=16)
+    ax.set_xlabel("Statistics", fontsize=14)
+    ax.set_ylabel("Features", fontsize=14)
+    plt.xticks(rotation=45)
+
+        # Display the heatmap
+    st.pyplot(fig)
 
 elif selected_main_page == "Length of Stay Analysis":
     # Preprocessing
