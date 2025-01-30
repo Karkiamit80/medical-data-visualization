@@ -188,6 +188,33 @@ def render_visualization(viz_type, df):
         plt.ylabel('Count')
         plt.legend(title='Medical Condition')
         st.pyplot(fig)
+        filtered_df = df[df['Medical Condition'].isin(conditions_to_plot)]
+
+# Group Data to Create Trends
+        condition_monthly_trend = (
+            filtered_df.groupby(['Medical Condition', 'Billing Amount'])
+            .size()
+            .reset_index(name='Count')
+        )
+
+        # Plotting the Line Chart
+        fig, ax = plt.subplots(figsize=(12, 6))
+
+        for condition in condition_monthly_trend:
+            data = condition_monthly_trend[condition_monthly_trend['Medical Condition'] == condition]
+            sns.lineplot(data=data, x='Billing Amount', y='Count', marker='o', label=condition, ax=ax)
+
+                # Customize the Chart
+            plt.title('Billing Amount Trends by Medical Condition', fontsize=16)
+            plt.xlabel('Billing Amount ($)', fontsize=12)
+            plt.ylabel('Count', fontsize=12)
+            plt.legend(title='Medical Condition', fontsize=10)
+            plt.grid(visible=True, linestyle='--', alpha=0.7)
+
+        # Display the Chart in Streamlit
+        st.pyplot(fig)
+        st.pyplot(fig)
+
 
     elif viz_type == "Histogram":
         st.title("Histogram: Distribution of Billing Amount")
